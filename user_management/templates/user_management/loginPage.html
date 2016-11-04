@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'user_management/um.css' %}" />
+    	<!--<link rel="stylesheet" href="{{ STATIC_URL }}um.css" />-->
+        <!-- Bootstrap -->
+    	<!--
+    	<link rel="stylesheet" href="{{ STATIC_URL }}um.css" />
+    	<link rel="stylesheet" href="{{ STATIC_URL }}bootstrap.min.css" />
+    	<link rel="stylesheet" href="{{ STATIC_URL }}bower_components/bootstrap/dist/css/bootstrap-theme.min.css" />
+    	<link rel="stylesheet" href="{{ STATIC_URL }}bower_components/font-awesome/css/font-awesome.min.css" /> -->
+		<title> Vehical Invetory Management</title>
+	</head>
+	<body id="mainLocation">
+		<!--<div class="imgcontainer">
+    		<img src="img_avatar2.png" alt="Avatar" class="avatar">
+ 		</div> -->
+
+  		<div class="container">
+            <ul>
+                <li>
+                    <label><b>Username</b></label>
+                    <input type="text" placeholder="Enter Username" name="uname" required id="loginId">
+                </li>
+                <li>
+                    <label><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required id="challengeId">
+                </li>
+                <li style="padding: 10px;">
+                    <input type="submit" value="Submit" onclick="loginRequest()"/>
+                    <span style="padding-left:20px;">Forgot <a href="#">password</a></span>
+                </li>
+            </ul>
+  		</div>
+
+
+	</body>
+	<!--<body id="mainLocation">
+		<span> Login Id </span>
+		<input type="text" id="loginId"/>
+		<br/>
+		<span> Password: </span>
+		<input type="password" id="challengeId"/>
+		<br/>
+		<input type="submit" value="submit" onclick="loginRequest()">
+	</body> -->
+	<script>
+		// This is CSRF token part
+		function getCookie(name) {
+    		var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = jQuery.trim(cookies[i]);
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+
+		var csrftoken = getCookie('csrftoken');
+
+		$.ajaxSetup({
+		    beforeSend: function(xhr) {
+		        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+		    }
+		});
+		function loginRequest(){
+			var login_id = document.getElementById("loginId").value;
+			var login_pass = document.getElementById("challengeId").value;
+			var param = {};
+			param.loginId = document.getElementById("loginId").value;
+			param.loginPass = document.getElementById("challengeId").value;
+			// AJAX call
+			if((login_id != "" )
+				&& (login_pass != "" )){
+
+				$.ajax({
+					type: "POST",
+	   		 		url: "loginAuth",
+	    			data: param,
+	    			dataType: "text",
+	    			success: function(response){
+	    				console.log(response)
+	    				var changes = document.getElementById("mainLocation");
+	    				changes.innerHTML = response;
+	    				//alert("you are logged in");
+	   			 	},
+	   			 	failure: function(response){
+
+	   			 		alert("failure");
+	   			 	},
+	   			 	error: function(){
+	   			 		alert("error");
+	   			 	}
+				});
+			}else{
+				alert("Username or password is missing");
+			}
+
+		}
+	</script>
+</html>

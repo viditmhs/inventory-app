@@ -31,13 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'user_management.apps.UserManagementConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sessions',
 ]
 
 MIDDLEWARE = [
@@ -48,7 +48,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
 ]
 
 ROOT_URLCONF = 'inventory.urls'
@@ -114,8 +113,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-SESSION_ENGINE = 'mongoengine.django.sessions'
-SESSION_SERIALIZER = 'mongoengine.django.sessions.BSONSerializer'
+#SESSION_ENGINE = 'mongoengine.django.sessions'
+#SESSION_SERIALIZER = 'mongoengine.django.sessions.BSONSerializer'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/

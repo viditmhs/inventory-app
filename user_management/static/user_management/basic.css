@@ -1,0 +1,17 @@
+body {
+    background-color: #D9D5D0;
+}
+
+.frame1{
+width: 80%;
+height: 720px;
+margin: 10px auto;
+display: block;
+border:1px solid black;
+border-radius: 10px;
+background-color: #F1EBE5;
+}
+
+.text{
+padding: 5px;
+}
