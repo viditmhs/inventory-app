@@ -20,3 +20,5 @@ class User(Document):
                         document['password'])
         else:
             return None
+
+

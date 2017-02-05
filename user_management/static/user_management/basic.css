@@ -14,7 +14,7 @@ box-shadow: 3px 7px 10px 0 #000000;
 .frame1left{
 width: 30%;
 height: 30%;
-margin: 10px auto;
+margin: 10px 10px;
 display: block;
 background-color: #FFF1E7;
 float:left;
@@ -23,7 +23,7 @@ box-shadow: 3px 7px 10px 0 #000000;
 .frame1center{
 width: 30%;
 height: 30%;
-margin: 10px auto;
+margin: 10px 10px;
 display: block;
 background-color: #FFF1E7;
 float:center;
@@ -32,7 +32,7 @@ box-shadow: 3px 7px 10px 0 #000000;
 .frame1right{
 width: 30%;
 height: 30%;
-margin: 10px auto;
+margin: 10px 10px;
 display: block;
 background-color: #FFF1E7;
 float:right;

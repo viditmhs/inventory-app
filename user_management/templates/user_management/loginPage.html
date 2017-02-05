@@ -90,9 +90,14 @@
 	    			data: param,
 	    			dataType: "text",
 	    			success: function(response){
-	    				console.log(response)
-	    				var changes = document.getElementById("mainLocation");
-	    				changes.innerHTML = response;
+	    				//console.log(response)
+	    				if(response.indexOf('responseCode')==-1){
+	    				    var changes = document.getElementById("mainLocation");
+	    				    changes.innerHTML = response;
+	    				}else{
+	    				    data = JSON.parse(response);
+	    				    alert("Response Code : " + data.responseCode + " \nResponse Message : " +  data.responseMessage);
+	    				}
 	    				//alert("you are logged in");
 	   			 	},
 	   			 	failure: function(response){
