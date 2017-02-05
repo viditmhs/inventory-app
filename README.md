@@ -8,10 +8,11 @@ Information about the project:
 **Creator** : Vidit Maheshwari
 **Contact Email** : vidit.maheshwari@gmail.com
 
-## Chapter 1: Vehicle Inventory Management
+# Chapter 1: Vehicle Inventory Management
 
-# Section 1.1 Comprise of setup section which will brief about the model overview and what all steps are needed to get started with.
+## Section 1.1 
+   Comprise of setup section which will brief about the model overview and what all steps are needed to get started with.
 
-## Chapter 2: Vehical Inventory API's
+# Chapter 2: Vehical Inventory API's
 
-# Section 1.1
+## Section 1.1
