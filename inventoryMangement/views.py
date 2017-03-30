@@ -18,8 +18,35 @@ def add(request):
         return HttpResponse("GET request not accepted.")
     elif request.method == 'POST':
         if(util.authentication(request.META['HTTP_AUTH'])):
-            resp = service.convertRequestToInventoryObject(request.body)
+            resp = service.saveVehical(request.body)
             return HttpResponse(resp)
         else:
             return HttpResponse(constants.AUTH_FAILED)
+    else:
+        return HttpResponse("Invalid request.")
+
+@csrf_exempt
+def get(request):
+    print("[INFO] Request to get all vehical data")
+    if request.method == 'GET':
+        return HttpResponse("GET request not accepted")
+    elif request.method == 'POST':
+        if (util.authentication(request.META['HTTP_AUTH'])):
+            resp = service.getVehicalData(request.body)
+            return HttpResponse(resp)
+    else:
+        return HttpResponse("Invalid request")
+
+@csrf_exempt
+def appendTrip(request):
+    print("[INFO] Request to add trip received.")
+    if request.method == 'GET':
+        return HttpResponse("GET request not accepted")
+    elif request.method == 'POST':
+        if (util.authentication(request.META['HTTP_AUTH'])):
+            resp = service.addTrip(request.body)
+            return HttpResponse(resp)
+    else:
+        return HttpResponse("Invalid request")
+
 

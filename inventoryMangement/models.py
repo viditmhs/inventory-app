@@ -4,6 +4,7 @@ from django.db import models
 from mongoengine import *
 
 # Create your models here.
+import json
 
 
 class DailyUpdate(Document):
@@ -20,12 +21,16 @@ class DailyUpdate(Document):
         else:
             return None
 
-class ServiceHistory(Document):
+class ServiceHistory(EmbeddedDocument):
     created = DateTimeField()
     KMstand = IntField()
     itemListReplaced = ListField()
     comment = StringField(max_length=500)
     cost = FloatField()
+
+    def toJSON(self):
+        data = {}
+        return json.dumps(data)
 
     def convert(self,document):
         if(document is not None):
@@ -33,16 +38,32 @@ class ServiceHistory(Document):
         else:
             return None
 
+class TripDetail(EmbeddedDocument):
+    tripFrom = StringField(max_lenght=1024)
+    tripTo = StringField(max_lenght=1024)
+    revenueGenerated = FloatField()
+    runningCost = FloatField()
+    journeyDuration = StringField(max_lenght=1024);
+    journeyDate = StringField(max_lenght=1024);
+    odoMeasure = IntField()
+
+    def toJSON(self):
+        data = {}
+        return json.dumps(data)
+
 class Vehical(Document):
     purchaseDate = DateTimeField()
     vn = StringField(max_length=20)
     chasisNumber = StringField(max_length=20)
-    dailyUpdate = {}
-    serviceHistory = {}
+    serviceHistory = ListField(EmbeddedDocumentListField(ServiceHistory))
+    triphistory = ListField(EmbeddedDocumentListField(TripDetail))
 
-    def convert(self, document):
+    def toJSON(self):
+        data = {}
+        data["purchaseDate"] = self.purchaseDate.strftime('%Y-%m-%d %H:%M')
+        data["vn"] = self.vn
+        data["chasisNumber"] = self.chasisNumber
+        data["serviceHistory"] = "{}" #self.serviceHistory.toJSON()
+        data["triphistory"] = "{}"#self.triphistory.toJSON()
 
-        if(document is not None):
-            return Vehical(document['purchaseDate'],document['vn'],document['chasisNumber'],document['dailyUpdate'],document['serviceHistory'])
-        else:
-            return None
+        return json.dumps(data)
