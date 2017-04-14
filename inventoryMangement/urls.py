@@ -7,4 +7,6 @@ urlpatterns = [
 	url(r'^get', views.get, name='get'),
 	url(r'^appendTrip', views.appendTrip, name='appendTrip'),
 	url(r'^appendService', views.appendService, name='appendService'),
+	url(r'^serviceData', views.getService, name='getService'),
+	url(r'^tripData', views.getTrip, name='getTrip'),
 ]

@@ -100,6 +100,7 @@ def addTrip(req):
             tripData = getTripDataFromRequest(jObject)
             if(tripData is not None):
                 vehical.update(add_to_set__tripHistory=tripData )
+                return "Successfully Added Trip"
             else:
                 resp['code'] = "203"
                 resp['message'] = "Illegal Trip Data"
@@ -145,6 +146,7 @@ def addService(req):
             serviceData = getServiceDataFromRequest(jObject)
             if(serviceData is not None):
                 vehical.update(add_to_set__serviceHistory=serviceData )
+                return "Successfully Added Service"
             else:
                 resp['code'] = "203"
                 resp['message'] = "Illegal Trip Data"
@@ -164,7 +166,7 @@ def addService(req):
         resp = "Invalid JSON request"
         return resp
 
-    return "NOT IMPLEMENTED"
+    return "Application Error"
 
 def getTripDataFromRequest(jObject):
     if("trip" not in jObject):
@@ -185,3 +187,39 @@ def getServiceDataFromRequest(jObject):
         service.setData(serviceData["created"], serviceData["KMstand"], serviceData["itemListReplaced"], serviceData["comment"],
                         serviceData["cost"])
         return service;
+
+def getVehicalServiceData(req):
+    resp = ""
+    try:
+        print(req)
+        if(req == ""):
+            jObject = "";
+        else:
+            jObject = json.loads(req)
+            vehicals = dao.getVehicalDataDAO(jObject)
+            resp = {}
+            resp["ServiceHistory"] = json.loads(vehicals[0].toJSON())["serviceHistory"]
+            return json.dumps(resp)
+    except json.JSONDecoder as e:
+        print(e)
+        resp = "Invalid JSON request"
+
+    return resp
+
+def getVehicalTripData(req):
+    resp = ""
+    try:
+        print(req)
+        if(req == ""):
+            jObject = "";
+        else:
+            jObject = json.loads(req)
+            vehicals = dao.getVehicalDataDAO(jObject)
+            resp = {}
+            resp["TripHistory"] = json.loads(vehicals[0].toJSON())["tripHistory"]
+            return json.dumps(resp)
+    except json.JSONDecoder as e:
+        print(e)
+        resp = "Invalid JSON request"
+
+    return resp
