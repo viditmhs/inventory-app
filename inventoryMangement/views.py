@@ -49,4 +49,15 @@ def appendTrip(request):
     else:
         return HttpResponse("Invalid request")
 
+@csrf_exempt
+def appendService(request):
+    print("[INFO] Request to add service received.")
+    if request.method == 'GET':
+        return HttpResponse("GET request not accepted")
+    elif request.method == 'POST':
+        if (util.authentication(request.META['HTTP_AUTH'])):
+            resp = service.addService(request.body)
+            return HttpResponse(resp)
+    else:
+        return HttpResponse("Invalid request")
 

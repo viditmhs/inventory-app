@@ -76,9 +76,7 @@ def getVehicalByChasisNumber(_chasisNumber):
 
 def getVehicalDataDAO(_query):
     try:
-        print("[INFO] Connecting DB")
         a = connect('inventoryData')
-        print("[INFO] Connection stablished")
         vn = ""
         chasisNumber = ""
         if(_query != ""):
@@ -87,9 +85,6 @@ def getVehicalDataDAO(_query):
 
             if('chasisNumber' in _query):
                 chasisNumber = _query['chasisNumber']
-
-        #print(vn)
-        #print(chasisNumber)
 
         if vn != "" and chasisNumber != "":
             resp = Model.Vehical.objects(Q(vn=vn) | Q(chasisNumber=chasisNumber) )
@@ -102,9 +97,7 @@ def getVehicalDataDAO(_query):
         else:
             resp = {}
             resp['message']  = "Invalid request."
-
         return resp
-
 
     except Exception as e:
         print ("Error in getVehical " + json.dumps(_query))

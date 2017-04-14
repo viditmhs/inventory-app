@@ -31,7 +31,7 @@ def saveVehical(data):
         _purchaseDate = jObject['purchanseDate']
         _vn = jObject['vn']
         _chasisNumber = jObject['chasisNumber']
-        _dailyUpdate = {}
+        _tripHistory = {}
         _serviceHistory = {}
 
         #Check if vehical with given vn and chasisNumber already present
@@ -44,8 +44,8 @@ def saveVehical(data):
         vehical.purchaseDate = _purchaseDate
         vehical.vn = _vn
         vehical.chasisNumber = _chasisNumber
-        vehical.dailyUpdate = _dailyUpdate
-        vehical.serviceHistory = _serviceHistory;
+        vehical.tripHistory = _tripHistory
+        vehical.serviceHistory = _serviceHistory
 
         #Making connection to DB
 
@@ -69,7 +69,7 @@ def getVehicalData(req):
         else:
             jObject = json.loads(req)
             vehicals = dao.getVehicalDataDAO(jObject)
-        return vehicals[0].toJSON();
+            return vehicals[0].toJSON()
     except json.JSONDecoder as e:
         print(e)
         resp = "Invalid JSON request"
@@ -95,8 +95,64 @@ def addTrip(req):
         _query = {}
         _query["vn"] = vn
         vehical = dao.getVehicalDataDAO(_query)
-        print (vehical)
-        return "Got Vehical"
+        if(vehical is not None):
+            ## Validate input request
+            tripData = getTripDataFromRequest(jObject)
+            if(tripData is not None):
+                vehical.update(add_to_set__tripHistory=tripData )
+            else:
+                resp['code'] = "203"
+                resp['message'] = "Illegal Trip Data"
+                return json.dumps(resp)
+        else:
+            resp['code'] = "203"
+            resp['message'] = "Vehical Not In System."
+            return json.dumps(resp)
+
+        # Add new trip data
+        ## check for valid trip data
+        ## validate trip data from previous trip data
+
+
+    except json.JSONDecoder as e:
+        print(e)
+        resp = "Invalid JSON request"
+        return resp
+
+    return "Application Error"
+
+def addService(req):
+    try:
+        print(req)
+        jObject = json.loads(req)
+        resp = {}
+        # Get vehical information
+        ## Check if valid vn is given
+        vn = "";
+        if('vn' not in jObject):
+            resp['code'] = "400"
+            resp['message']="Missing vn."
+            return json.dumps(resp)
+        else:
+            vn = jObject['vn']
+
+        ## Check for given vn we have vehical in the database
+        _query = {}
+        _query["vn"] = vn
+        vehical = dao.getVehicalDataDAO(_query)
+        if(vehical is not None):
+            ## Validate input request
+            serviceData = getServiceDataFromRequest(jObject)
+            if(serviceData is not None):
+                vehical.update(add_to_set__serviceHistory=serviceData )
+            else:
+                resp['code'] = "203"
+                resp['message'] = "Illegal Trip Data"
+                return json.dumps(resp)
+        else:
+            resp['code'] = "203"
+            resp['message'] = "Vehical Not In System."
+            return json.dumps(resp)
 
         # Add new trip data
         ## check for valid trip data
@@ -109,3 +165,23 @@ def addTrip(req):
         return resp
 
     return "NOT IMPLEMENTED"
+
+def getTripDataFromRequest(jObject):
+    if("trip" not in jObject):
+        return None
+    else:
+        tripData = jObject["trip"]
+        trip = Models.TripDetail();
+        trip.setData(tripData["tripFrom"], tripData["tripTo"], tripData["revenueGenerated"], tripData["runningCost"],
+                     tripData["journeyDuration"],tripData["journeyDate"],tripData["odoMeasure"])
+        return trip;
+
+def getServiceDataFromRequest(jObject):
+    if("service" not in jObject):
+        return None
+    else:
+        serviceData = jObject["service"]
+        service = Models.ServiceData();
+        service.setData(serviceData["created"], serviceData["KMstand"], serviceData["itemListReplaced"], serviceData["comment"],
+                        serviceData["cost"])
+        return service;
