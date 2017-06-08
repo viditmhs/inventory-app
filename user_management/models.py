@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from mongoengine import *
+import json
 
 # Create your models here.
 
@@ -21,4 +22,12 @@ class User(Document):
         else:
             return None
 
+    def toJSON(self,):
+        data = {};
+        data["email"] = self.email
+        data["first_name"] = self.first_name
+        data["last_name"] = self.last_name
+        data["role"] = self.role
+
+        return json.dumps(data)
 

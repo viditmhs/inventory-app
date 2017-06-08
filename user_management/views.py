@@ -16,6 +16,7 @@ def loginStart(request):
     userLoginId = request.POST.get('loginId', '')
     userPass = request.POST.get('loginPass', '')
     u = usc.getUserByEmail(userLoginId)
+    print(u.toJSON())
     if(u is not None and userLoginId == u.email):
         if(userPass == u.password):
             
